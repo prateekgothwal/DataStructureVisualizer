@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<style>
+table
+{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+td
+{
+border: 2px solid black;
+font-size:40px;
+padding:10px;
+min-width:60px;
+max-width:60px;
+text-align:center;
+}
+@keyframes insertAtIndex
+{
+0% {background-color:white; color:black;}
+50% {background-color:black; color:white;}
+100% {background-color:white; color:black;}
+}
+@keyframes getValue
+{
+0% {background-color:white; color:black;}
+50% {background-color:green; color:white;}
+100% {background-color:white; color:black;}
+}
+#swapTemp
+{
+margin:auto;
+margin-top:300px;
+border: 2px solid black;
+font-size:40px;
+padding:10px;
+min-width:60px;
+max-width:60px;
+height:50px;
+text-align:center;
+}
+</style>
+<script>
+function createArray()
+{
+var size=document.getElementById("sizeOfArray").value;
+var i;
+var arrayDiv=document.getElementById("array");
+var table=document.createElement("table");
+arrayDiv.appendChild(table);
+var row,cell,textNode;
+row=document.createElement("tr");
+table.appendChild(row);
+for(i=0;i<size;i++)
+{
+td=document.createElement("td");
+textNode=document.createTextNode("G");
+td.style.color="black";
+td.appendChild(textNode);
+row.appendChild(td);
+}
+row=document.createElement("tr");
+table.appendChild(row);
+for(i=0;i<size;i++)
+{
+td=document.createElement("td");
+textNode=document.createTextNode(i);
+td.style.border="none";
+td.style.fontSize="20px";
+td.style.textAlign="center";
+td.appendChild(textNode);
+row.appendChild(td);
+}
+document.getElementById('insertionIndex').max=size-1;
+document.getElementById('getValueIndex').max=size-1;
+document.getElementById('index1').max=size-1;
+document.getElementById('index2').max=size-1;
+document.getElementById("sizeOfArray").disabled=true;
+document.getElementById('createArrayBtn').disabled=true;
+}
+function insertAtIndex()
+{
+if(parseInt(document.getElementById('insertionIndex').value)>parseInt(document.getElementById('insertionIndex').max))
+{
+document.getElementById('insertionError').innerHTML="Max index is : "+String(parseInt(document.getElementById('insertionIndex').max));
+return;
+}
+if(parseInt(document.getElementById('insertionIndex').value)<parseInt(document.getElementById('insertionIndex').min))
+{
+document.getElementById('insertionError').innerHTML="Min index is : "+String(parseInt(document.getElementById('insertionIndex').min));
+return;
+}
+document.getElementById('insertionError').innerHTML='';
+var tds=document.getElementsByTagName("td");
+td=tds[document.getElementById("insertionIndex").value];
+td.style.animationName="insertAtIndex";
+td.style.animationDuration="5s";
+td.innerHTML=document.getElementById("value").value;
+setTimeout(function(){
+td.style.animationName=null;
+td.style.animationDuration=null;
+},6000);
+}
+
+function valueAtIndex()
+{
+if(parseInt(document.getElementById('getValueIndex').value)>parseInt(document.getElementById('getValueIndex').max))
+{
+document.getElementById('getValueError').innerHTML="Max index is : "+String(parseInt(document.getElementById('getValueIndex').max));
+return;
+}
+if(parseInt(document.getElementById('getValueIndex').value)<parseInt(document.getElementById('getValueIndex').min))
+{
+document.getElementById('getValueError').innerHTML="Min index is : "+String(parseInt(document.getElementById('getValueIndex').min));
+return;
+}
+document.getElementById('getValueError').innerHTML='';
+var tds=document.getElementsByTagName("td");
+td=tds[document.getElementById("getValueIndex").value];
+td.style.animationName="getValue";
+td.style.animationDuration="4s";
+if(String(td.innerHTML)=="G")
+{
+document.getElementById('getValue').value="GARBAGE VALUE";
+}
+else
+{
+document.getElementById('getValue').value=td.innerHTML;
+}
+setTimeout(function(){
+td.style.animationName=null;
+td.style.animationDuration=null;
+},4000);
+}
+
+function swap()
+{
+var temp=document.getElementById('swapTemp');
+var tds=document.getElementsByTagName("td");
+td=tds[document.getElementById("index1").value];
+temp.style.display='block';
+temp.innerHTML=td.innerHTML;
+td.style.animationName="insertAtIndex";
+td.style.animationDuration="3s";
+temp.style.animationName="insertAtIndex";
+temp.style.animationDuration="3s";
+setTimeout(function(){
+td.style.animationName=null;
+td.style.animationDuration=null;
+temp.style.animationName=null;
+temp.style.animationDuration=null;
+tds[document.getElementById("index1").value].innerHTML=tds[document.getElementById("index2").value].innerHTML;
+
+setTimeout(function(){
+var td1,td2;
+td1=tds[document.getElementById("index1").value];
+td1.style.animationName="insertAtIndex";
+td1.style.animationDuration="3s";
+td2=tds[document.getElementById("index2").value];
+td2.style.animationName="insertAtIndex";
+td2.style.animationDuration="3s";
+
+setTimeout(function(){
+td1=tds[document.getElementById("index1").value];
+td1.style.animationName=null;
+td1.style.animationDuration=null;
+td2=tds[document.getElementById("index2").value];
+td2.style.animationName=null;
+td2.style.animationDuration=null;
+
+td2.innerHTML=temp.innerHTML;
+setTimeout(function(){
+td=tds[document.getElementById("index2").value];
+td.style.animationName="insertAtIndex";
+td.style.animationDuration="3s";
+temp.style.animationName="insertAtIndex";
+temp.style.animationDuration="3s";
+
+setTimeout(function(){
+td.style.animationName=null;
+td.style.animationDuration=null;
+temp.style.animationName=null;
+temp.style.animationDuration=null;
+temp.style.display='none';
+},3000);
+},200);
+},3000);
+},200);
+},3000);
+}
+</script>
+<head>
+<body>
+<div>
+<p style='text-align:center;color:red;font-size:40px;font-style:bold'><span style='float:left;color:black;font-size:15px;font-style:bold;vertical-align:middle;'><a href='index.html'>BACK</a></span>ARRAY</p>
+</div>
+<label style='font-size:20px;'>CREATE ARRAY : </label><input type='text' id='sizeOfArray'>
+<button type='button' id='createArrayBtn' style='font-size:16px;' onclick='createArray()'>Create</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style='float:right;margin-right:20px;'>
+<label style='font-size:20px;'>Insert Element at index : </label>
+VALUE : <input type='number' id='value'>&nbsp;&nbsp;&nbsp;&nbsp;
+INDEX : <input type='number' id='insertionIndex' min="0" max="0"><span id='insertionError'></span>
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' id='insertAtIndexBtn' style='font-size:16px;' onclick='insertAtIndex()'>INSERT</button>
+</span><br><br>
+<label style='font-size:20px;'>Get Value at index : </label>
+INDEX : <input type='number' id='getValueIndex' min="0" max="0"><span id='getValueError'></span>
+VALUE : <input type='text' id='getValue' disabled="true">
+<button type='button' id='valueAtIndexBtn' style='font-size:16px;' onclick='valueAtIndex()'>GET</button>
+<span style='float:right;margin-right:20px;'>
+<label style='font-size:20px;'>SWAP : </label>
+INDEX 1 : <input type='number' id='index1' min="0" max="0">&nbsp;&nbsp;&nbsp;
+INDEX 2 : <input type='number' id='index2' min="0" max="0">
+<button type='button' id='swapBtn' style='font-size:16px;' onclick='swap()'>SWAP</button>
+</span>
+<div id="array"></div>
+<div id="swapTemp" style="display:none"></div>
+</body>
+</html>

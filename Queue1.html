@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/*queue animation starts here*/
+	@keyframes enQueue {
+		from {
+			transform: translateX(-100px);
+		}
+		to {
+			transform: translateX(200px);
+		}
+	}
+	@keyframes deQueue {
+		from {
+			transform: translateX(210px);
+		}/*calc(var(--from) * 1px)*/
+		to {
+			transform: translateX(700px));
+		}/*calc(var(--to) * 1px*/
+	}
+	/*queue animation ends here*/
+</style>
+<script>
+// queue starts here
+	var queue = [];
+	var root = document.documentElement;
+	var counter = 0;
+	function enQueue()
+	{
+		window.scrollTo(0, 0);
+		var error;
+		var number = document.getElementById('queueValue').value;
+		if(number.length == 0 || number == '')
+		{
+			error = "Invalid input";
+			document.getElementById('enQueueErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(number))
+		{
+			error = "Invalid input";
+			document.getElementById('enQueueErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			number = parseInt(number);
+			document.getElementById('enQueueErrorSection').innerHTML = '';
+		}
+		var td = document.createElement('td');
+		td.className = 'queueNodeClass' + (queue.length + counter);
+		td.id = 'queueNode' + (queue.length + counter);
+		// var label = document.createElement('label');
+		// label.innerHTML=number;
+		// label.style = 'line-height: 50px;';
+		// td.append(label);
+		td.innerHTML = number;
+		document.getElementById('queueView').prepend(td);
+		td.style = 'min-width: 50px; height: 50px;border: 4px solid green;text-align: center;background: #01DF3A;border-radius: 50%;animation-name: enQueue;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(200px);';
+		queue.push(number);
+		td.addEventListener('animationend', function() {
+			var r = td.getBoundingClientRect();
+			// alert(r.left + ' ' + r.top);
+		});
+document.getElementById('size').value=queue.length;
+	}
+	function deQueue()
+	{
+		if(queue.length == 0)
+		{
+			document.getElementById('enQueueErrorSection').innerHTML = 'Queue is empty';
+			return;
+		}
+		else
+		{
+			document.getElementById('enQueueErrorSection').innerHTML = '';
+		}
+		var id = 'queueNode' + counter;
+		var className = 'queueNodeClass' + counter;
+		var element=document.getElementById(id);
+		window.scrollTo(200 + (element.offsetLeft + 58) + 300, 0);
+		// alert(element.offsetLeft);
+		root.style.setProperty('--from', element.offsetLeft + 58);
+		root.style.setProperty('--to', (element.offsetLeft + 58) + 1100);
+		element.style = 'min-width: 50px;height: 50px;border: 4px solid green;text-align: center;background: #01DF3A;border-radius: 50%;animation-name: deQueue;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(calc(var(--to) * 1px));';
+		// document.head.append(sheet);
+		// document.style += sheet.innerHTML;
+		element.addEventListener('animationend', function() {
+			window.scrollTo(0, 0);
+			var x = document.getElementsByClassName(className);
+			var length = x.length;
+			if(length == 1)
+			{
+				x[length - 1].remove();
+				return;
+			}
+			var e = 1;
+			while(e < length)
+			{
+				x[e].remove();
+				++e;
+			}
+		});
+document.getElementById('poppedValue').value=queue[0];
+		queue.splice(0, 1);
+document.getElementById('size').value=queue.length;
+		counter++;
+		// alert('stackNode' + array.length);
+	}
+	function emptyQueue()
+	{
+		if(queue.length == 0)
+		{
+			document.getElementById('enQueueErrorSection').innerHTML = 'Queue is empty';
+			return;
+		}
+		counter = 0;
+		queue.splice(0, queue.length);
+		var view = document.getElementById('queueView');
+		$('#queueView').empty();
+		var td = document.createElement('td');
+		td.id = 'queueDummyCell';
+		td.style = 'min-width: 300px; height: 58px;';
+		view.prepend(td);
+	}
+function getFront(){document.getElementById('getFront').value=queue[0];}
+function getRear(){document.getElementById('getRear').value=queue[queue.length-1];}
+	// queue ends here
+</script>
+</head>
+<body>
+<div>
+<p style='text-align:center;color:red;font-size:40px;font-style:bold'><span style='float:left;color:black;font-size:15px;font-style:bold;vertical-align:middle;'><a href='index.html'>BACK</a></span>QUEUE</p>
+</div>
+
+<div id = 'queue' style = ''>
+	<div>
+<label style='font-size:20px;'>INSERT : </label><input type='number' id='queueValue'><button style='font-size:16px' type='button' id='pushBtn' onclick='enQueue()'>EnQueue</button><span id='enQueueErrorSection'></span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style='float:right;margin-right:20px;'>
+<label style='font-size:20px;'>Get Front : </label>
+<input type='text' id='getFront' disabled="true">
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' style='font-size:16px;' onclick='getFront()'>GET FRONT</button>
+</span><br><br>
+
+<label style='font-size:20px;'>REMOVE : </label>
+<input type='text' id='poppedValue' disabled="true">
+<button type='button' id='popBtn' style='font-size:16px;' onclick='deQueue()'>DeQueue</button><span id='deQueueErrorSection'></span>
+<span style='float:right;margin-right:20px;'>
+<label style='font-size:20px;'>Get Rear : </label>
+<input type='text' id='getRear' disabled="true">
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' style='font-size:16px;' onclick='getRear()'>GET REAR</button>
+</span><br><br>
+
+<label style='font-size:20px;'>Size of queue is : </label>
+<input type='text' id='size' value='0' disabled="true">
+
+	</div>
+	<br><br><br><br>
+	<table>
+		<tr height = '100px'></tr>
+		<tr id = 'queueView'>
+			<td id = 'queueDummyCell' style = 'min-width: 300px; height: 58px;'></td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

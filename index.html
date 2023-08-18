@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background-image: url("DataStructureWallpaper.jfif");
+}
+#buttonArray
+{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.btn
+{
+width:300px;
+height:200px;
+text-align:center;
+font-size:40px;
+font-style:bold;
+color:white;
+text-shadow:5px 5px black;
+margin:20px;
+background-color: rgba(255,255,255,0.2);
+border:2px solid black;
+}
+.btn:hover
+{
+cursor:pointer;
+background-color:black;
+}
+</style>
+<script>
+function openPage(page)
+{
+link=document.createElement("a");
+link.href="/MajorProject/"+page;
+link.click();
+}
+</script>
+</head>
+<body>
+<p style='color:yellow;font-size:60px;font-style:bold;text-align:center;'>DATA STRUCTURE VISUALIZER</p>
+<div id='buttonArray'>
+<button type="button" class="btn" onclick="openPage('Array.html')">ARRAY</button>
+<button type="button" class="btn" onclick="openPage('Stack.html')">STACK</button>
+<br>
+<button type="button" class="btn" onclick="openPage('Queue.html')">QUEUE</button>
+<button class="btn" type="button" onclick="openPage('LinkedList.html')">LINKED LIST</button>
+</div>
+</body>
+</html>

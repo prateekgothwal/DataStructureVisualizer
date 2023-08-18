@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/*linked list animation starts here*/
+	@keyframes insert {
+		from {
+			transform: translate(-100px, 100px);
+		}
+		50% {
+			transform: translate(50px, 100px);
+		}
+		to {
+			transform: translate(200px, 0px);
+		}
+	}
+	@keyframes delete {
+		from {
+
+			transform: translate(200px, 0px);
+		}
+		50% {
+			transform: translate(50px, 100px);
+		}
+		to {
+			transform: translate(-100px, 100px);
+		}
+	}
+	/*linked list animation ends here*/
+</style>
+<script>
+	function Pair(linkedListNodeClassName, linkClassName)
+	{
+		this.linkedListNodeClassName = linkedListNodeClassName;
+		this.linkClassName = linkClassName;
+	}
+	var linkedList = [];
+	var listCounter = 0;
+	function insertAtTop(lelo=0)
+	{
+		window.scrollTo(0, 0);
+		var error;
+		if(lelo==0)
+{
+		var number = document.getElementById('topLinkedListValue').value;
+}
+else
+{
+		var number = document.getElementById('positionValue').value;
+}		if(number.length == 0 || number == '')
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(number))
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			number = parseInt(number);
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var td = document.createElement('td');
+		td.className = 'linkedListNodeClass' + listCounter;
+		td.id = 'linkedListNode' + listCounter;
+		td.innerHTML = number;
+		td.style = 'min-width: 50px; min-height: 35px;border: 2px solid green;text-align: center; animation-name: insert;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(200px);';
+		var line = document.createElement('img');
+		var f = 0;
+		if(linkedList.length != 0)
+		{
+			f = 1;
+			line.id = 'line' + listCounter;
+			line.className = 'lineClass' + listCounter;
+			line.src = '2.png';
+			line.style = 'min-width: 50px; max-height: 35px; transform: translateX(200px); visibility: hidden;';
+			document.getElementById('linkedListView').prepend(line);
+			linkedList.splice(0, 0, (new Pair(td.className, line.className)));
+		}
+		else
+		{
+			linkedList.splice(0, 0, (new Pair(td.className, null)));
+		}
+		document.getElementById('linkedListView').prepend(td);
+		listCounter++;
+		td.addEventListener('animationend', function() {
+			if(f == 1) document.getElementById(line.id).style.visibility = 'visible';
+		});
+	}
+	function insertAtEnd(lelo=0)
+	{
+		window.scrollTo(linkedList.length * 100, 0);
+		var error;
+		if(lelo==0)
+{
+		var number = document.getElementById('endLinkedListValue').value;
+}
+else
+{
+		var number = document.getElementById('positionValue').value;
+}
+		if(number.length == 0 || number == '')
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(number))
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			number = parseInt(number);
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var td = document.createElement('td');
+		td.className = 'linkedListNodeClass' + listCounter;
+		td.id = 'linkedListNode' + listCounter;
+		td.innerHTML = number;
+		td.style = 'min-width: 50px; max-height: 35px;border: 2px solid green;text-align: center;animation-name: insert;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(200px);';
+		var line = document.createElement('img');
+		var f = 0;
+		if(linkedList.length != 0)
+		{
+			f = 1;
+			line.id = 'line' + listCounter;
+			line.className = 'lineClass' + listCounter;
+			line.src = '2.png';
+			line.style = 'min-width: 50px; max-height: 35px; transform: translateX(200px); visibility: hidden;';
+			document.getElementById('linkedListView').insertBefore(line, document.getElementById('linkedListDummyCell'));
+			linkedList[linkedList.length - 1].linkClassName = line.className;
+		}
+		linkedList.splice(linkedList.length, 0, (new Pair(td.className, null)))
+		document.getElementById('linkedListView').insertBefore(td, document.getElementById('linkedListDummyCell'));
+		listCounter++;
+		td.addEventListener('animationend', function() {
+			window.scrollTo(0, 0);
+			if(f == 1) document.getElementById(line.id).style.visibility = 'visible';
+		});
+	}
+	function insertAtPosition()
+	{
+		var position = document.getElementById('insertionPosition').value;
+console.log(position);
+		if(position.length == 0 || position == '')
+		{
+			error = "Invalid position";
+			document.getElementById('insertPositionErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(position))
+		{
+			error = "Invalid position";
+			document.getElementById('insertPositionErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			position = parseInt(position);
+			document.getElementById('insertPositionErrorSection').innerHTML = '';
+		}
+		if(position <= 0 || position > linkedList.length + 1)
+		{
+			error = "Invalid position";
+			document.getElementById('insertPositionErrorSection').innerHTML = error;
+			return;
+		}
+		if(position == 1)
+		{
+			insertAtTop(1);
+			return;
+		}
+		if(position == linkedList.length + 1)
+		{
+			insertAtEnd(1);
+			return;
+		}
+		window.scrollTo(position * 100, 0);
+		var error;
+		var number = document.getElementById('positionValue').value;
+		if(number.length == 0 || number == '')
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(number))
+		{
+			error = "Invalid input";
+			document.getElementById('insertErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			number = parseInt(number);
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var td = document.createElement('td');
+		td.className = 'linkedListNodeClass' + listCounter;
+		td.id = 'linkedListNode' + listCounter;
+		td.innerHTML = number;
+		td.style = 'min-width: 50px; max-height: 35px;border: 2px solid green;text-align: center;animation-name: insert;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(200px);';
+		var line = document.createElement('img');
+		line.id = 'line' + listCounter;
+	 	line.className = 'lineClass' + listCounter;
+		line.src = '2.png';
+		line.style = 'min-width: 50px; max-height: 35px; transform: translateX(200px); visibility: hidden;';
+
+		document.getElementById('linkedListView').insertBefore(line, document.getElementById('linkedListNode' + linkedList[position - 1].linkedListNodeClassName.substring(19)));
+
+		document.getElementById('linkedListView').insertBefore(td, line);
+		linkedList.splice(position - 1, 0, (new Pair(td.className, line.className)));
+		listCounter++;
+		td.addEventListener('animationend', function() {
+			window.scrollTo(0, 0);
+			document.getElementById(line.id).style.visibility = 'visible';
+		});
+	}
+	function deleteFromTop()
+	{
+		if(linkedList.length == 0)
+		{
+			document.getElementById('insertErrorSection').innerHTML = 'Linked list is empty';
+			return;
+		}
+		else
+		{
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var id = 'linkedListNode' + linkedList[0].linkedListNodeClassName.substring(19);
+		var className = linkedList[0].linkedListNodeClassName;
+		var element=document.getElementById(id);
+		window.scrollTo(0, 0);
+		element.style = 'min-width: 50px;max-height: 35px;border: 2px solid green;text-align: center;animation-name: delete;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(-100px);';
+		// document.head.append(sheet);
+		// document.style += sheet.innerHTML;
+		element.addEventListener('animationend', function() {
+			window.scrollTo(0, 0)	;
+			var x = document.getElementsByClassName(className);
+			var length = x.length;
+			if(length == 1)
+			{
+				x[length - 1].remove();
+				return;
+			}
+			var e = 1;
+			while(e < length)
+			{
+				x[e].remove();
+				++e;
+			}
+		});
+		if(linkedList.length != 1)
+		{
+			document.getElementsByClassName(linkedList[0].linkClassName)[0].remove();
+		}
+		linkedList.splice(0, 1);
+	}
+	function deleteFromEnd()
+	{
+		if(linkedList.length == 0)
+		{
+			document.getElementById('insertErrorSection').innerHTML = 'Linked list is empty';
+			return;
+		}
+		else
+		{
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var id = 'linkedListNode' + linkedList[linkedList.length - 1].linkedListNodeClassName.substring(19);
+		var className = linkedList[linkedList.length - 1].linkedListNodeClassName;
+		var element=document.getElementById(id);
+		window.scrollTo(200 + (linkedList.length * 100), 0);
+		// alert(element.offsetLeft);
+		element.style = 'min-width: 50px;max-height: 35px;border: 2px solid green;text-align: center;animation-name: delete;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(-100px);';
+		// document.head.append(sheet);
+		// document.style += sheet.innerHTML;
+		element.addEventListener('animationend', function() {
+			window.scrollTo(0, 0);
+			var x = document.getElementsByClassName(className);
+			var length = x.length;
+			if(length == 1)
+			{
+				x[length - 1].remove();
+				return;
+			}
+			var e = 1;
+			while(e < length)
+			{
+				x[e].remove();
+				++e;
+			}
+		});
+		if(linkedList.length != 1)
+		{
+			document.getElementsByClassName(linkedList[linkedList.length - 2].linkClassName)[0].remove();
+		}
+		linkedList.splice(linkedList.length - 1, 1);
+	}
+	function deleteFromPosition()
+	{
+		if(linkedList.length == 0)
+		{
+			document.getElementById('insertErrorSection').innerHTML = 'Linked list is empty';
+			return;
+		}
+		else
+		{
+			document.getElementById('insertErrorSection').innerHTML = '';
+		}
+		var position = document.getElementById('deletePositionValue').value;
+		if(position.length == 0 || position == '')
+		{
+			error = "Invalid position";
+			document.getElementById('deletePositionErrorSection').innerHTML = error;
+			return;
+		}
+		if(isNaN(position))
+		{
+			error = "Invalid position";
+			document.getElementById('deletePositionErrorSection').innerHTML = error;
+			return;
+		}
+		else
+		{
+			position = parseInt(position);
+			document.getElementById('deletePositionErrorSection').innerHTML = '';
+		}
+		if(position <= 0 || position > linkedList.length)
+		{
+			error = "Invalid position";
+			document.getElementById('deletePositionErrorSection').innerHTML = error;
+			return;
+		}
+		if(position == 1)
+		{
+			deleteFromTop();
+			return;
+		}
+		if(position == linkedList.length)
+		{
+			deleteFromEnd();
+			return;
+		}
+		window.scrollTo(position * 100, 0);
+		var id = 'linkedListNode' + linkedList[position - 1].linkedListNodeClassName.substring(19);
+		var className = linkedList[position - 1].linkedListNodeClassName;
+		var element=document.getElementById(id);
+		// alert(element.offsetLeft);
+		element.style = 'min-width: 50px;max-height: 35px;border: 2px solid green;text-align: center;animation-name: delete;animation-duration: 2s;animation-iteration-count: initial;animation-direction: all;transition-property: transform;transform: translateX(-100px);';
+		// document.head.append(sheet);
+		// document.style += sheet.innerHTML;
+		element.addEventListener('animationend', function() {
+			window.scrollTo(0, 0);
+			var x = document.getElementsByClassName(className);
+			var length = x.length;
+			if(length == 1)
+			{
+				x[length - 1].remove();
+				return;
+			}
+			var e = 1;
+			while(e < length)
+			{
+				x[e].remove();
+				++e;
+			}
+		});
+		document.getElementsByClassName(linkedList[position - 1].linkClassName)[0].remove();
+		linkedList.splice(position - 1, 1);
+	}
+	function emptyLinkedList()
+	{
+		if(linkedList.length == 0)
+		{
+			document.getElementById('insertErrorSection').innerHTML = 'Linked list is empty';
+			return;
+		}
+		listCounter = 0;
+		linkedList.splice(0, linkedList.length);
+		var view = document.getElementById('linkedListView');
+		$('#linkedListView').empty();
+		var td = document.createElement('td');
+		td.id = 'linkedListDummyCell';
+		td.style = 'min-width: 300px; max-height: 35px;';
+		view.prepend(td);
+	}
+	// linked list ends here
+</script>
+</head>
+<body>
+<div>
+<p style='text-align:center;color:red;font-size:40px;font-style:bold'><span style='float:left;color:black;font-size:15px;font-style:bold;vertical-align:middle;'><a href='index.html'>BACK</a></span>LINKED LIST</p>
+</div>
+
+<div id = 'linkedList' style = ''>
+
+	<div>
+<label style='font-size:20px;'>Insert at Top : </label><input type='text' id='topLinkedListValue'>
+<button type='button' style='font-size:16px;' onclick='insertAtTop()'>INSERT</button><span id = 'insertErrorSection'></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style='float:right;margin-right:20px;'>
+<span id='deletePositionErrorSection'></span>
+<label style='font-size:20px;'>Deletion from Top : </label>
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' style='font-size:16px;' onclick='deleteFromTop()'>DELETE</button>
+</span>
+<br><br>
+<label style='font-size:20px;'>Insert at End : </label><input type='text' id='endLinkedListValue'>
+<button type='button' style='font-size:16px;' onclick='insertAtEnd()'>INSERT</button><span id = 'insertErrorSection'></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style='float:right;margin-right:20px;'>
+<label style='font-size:20px;'>Deletion from End : </label>
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' style='font-size:16px;' onclick='deleteFromEnd()'>DELETE</button>
+</span>
+<br><br>
+<label style='font-size:20px;'>Insert Element at position : </label>
+Value : <input type='number' id='positionValue'>&nbsp;&nbsp;&nbsp;&nbsp;
+Position : <input type='number' id='insertionPosition' min="0">
+<button type='button' style='font-size:16px;' onclick='insertAtPosition()'>INSERT</button><span id = 'insertErrorSection'></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span id='insertPositionErrorSection'></span>
+<span style='float:right;margin-right:20px'>
+<label style='font-size:20px;'>Deletion from Position : </label><input type='text' id='deletePositionValue'>
+&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' style='font-size:16px;' onclick='deleteFromPosition()'>DELETE</button>
+</span>
+	<br><br><br><br>
+	<table>
+		<tr height = '100px'></tr>
+		<tr id = 'linkedListView'>
+			<td id = 'linkedListDummyCell' style = 'min-width: 300px; max-height: 35px;'></td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>
